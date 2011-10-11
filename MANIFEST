@@ -1,0 +1,15 @@
+Changes
+lib/Erlang/Parser.pm
+lib/Erlang/Parser/Dumper.pm
+lib/Erlang/Parser/Lexer.pm
+lib/Erlang/Parser/Parser.yp
+Makefile.PL
+MANIFEST			This list of files
+README
+t/00-load.t
+t/basic.t
+t/lexer.t
+t/manifest.t
+t/pod-coverage.t
+t/pod.t
+META.yml                                 Module meta-data (added by MakeMaker)

@@ -1,0 +1,281 @@
+# Copyright 2011 Anneli Cuss. ( anneli AT cpan DOT org )
+# This is free software; you can redistribute it and/or modify it under the
+# same terms as Perl itself.
+
+%nonassoc KW_CATCH
+%left KW_ANDALSO KW_ORELSE
+%nonassoc EQUALS EQUALITY NOT_EQUAL LARROW LDARROW LTE GTE LT GT STRICTLY_EQUAL NOT_QUITE_EQUAL
+%right SEND
+%left KW_OR KW_BOR KW_BXOR
+%left KW_BSL KW_BSR KW_AND KW_BAND
+%left ADD SUBTRACT
+%left DIVIDE KW_DIV MULTIPLY KW_REM
+%right KW_NOT
+%right LISTADD LISTSUBTRACT
+
+%%
+
+# TODO: A few of these lists are flawed in that their optional type isn't done correctly
+# (they allow constructs like [, 1, 2]). Fix this.
+
+root:
+				{ [] }
+    | root rootstmt		{ [@{$_[1]}, $_[2]] }
+    ;
+
+rootstmt:
+      DIRECTIVE exprlist RPAREN PERIOD			{ ['directive', substr($_[1], 1, -1), $_[2]->[1]] }
+    | deflist PERIOD					{ $_[1] }
+    ;
+
+deflist:
+      def			{ ['deflist', [$_[1]]] }
+    | deflist SEMICOLON def	{ ['deflist', [@{$_[1]->[1]}, $_[3]]] }
+    ;
+
+def:
+      INTCALL exprlist RPAREN whenlist RARROW stmtlist	{ ['def', substr($_[1], 0, -1), $_[2]->[1], $_[4]->[1], $_[6]->[1]] }
+    ;
+
+whenlist:
+				{ ['whenlist', []] }
+    | KW_WHEN expr		{ ['whenlist', [$_[2]]] }
+    # TODO differentiate these. (a;b,c (A)||(B&&C))
+    | whenlist COMMA expr	{ ['whenlist', [@{$_[1]->[1]}, $_[3]]] }
+    | whenlist SEMICOLON expr	{ ['whenlist', [@{$_[1]->[1]}, $_[3]]] }
+    ;
+
+stmtlist:
+      stmt			{ ['stmtlist', [$_[1]]] }
+    | stmtlist COMMA stmt	{ ['stmtlist', [@{$_[1]->[1]}, $_[3]]] }
+    ;
+
+stmt:
+      expr;
+
+exprlist:
+				{ ['exprlist', []] }
+    | expr			{ ['exprlist', [$_[1]]] }
+    | exprlist COMMA expr	{ ['exprlist', [@{$_[1]->[1]}, $_[3]]] }
+    ;
+
+expr:
+      ATOM			{ ['atom', $_[1]] }
+    | FLOAT			{ ['float', $_[1]] }
+    | immexpr
+    | list
+    | tuple
+    | case
+    | fun
+    | newrecord
+    | binary
+    | receive
+    | comprehension
+    | try
+    | if
+    | KW_BEGIN exprlist KW_END	{ ['begin', $_[2]->[1]] }
+    | expr SEND expr		{ ['send', $_[1], $_[3]] }
+    | expr LT expr		{ ['lt', $_[1], $_[3]] }
+    | expr LTE expr		{ ['lte', $_[1], $_[3]] }
+    | expr GT expr		{ ['gt', $_[1], $_[3]] }
+    | expr GTE expr		{ ['gte', $_[1], $_[3]] }
+    | expr DIVIDE expr		{ ['divide', $_[1], $_[3]] }
+    | expr KW_DIV expr		{ ['div', $_[1], $_[3]] }
+    | expr MULTIPLY expr	{ ['multiply', $_[1], $_[3]] }
+    | expr ADD expr		{ ['add', $_[1], $_[3]] }
+    | expr SUBTRACT expr	{ ['subtract', $_[1], $_[3]] }
+    | expr EQUALS expr		{ ['equals', $_[1], $_[3]] }
+    | expr LISTADD expr		{ ['list-add', $_[1], $_[3]] }
+    | expr LISTSUBTRACT expr	{ ['list-subtract', $_[1], $_[3]] }
+    | expr EQUALITY expr	{ ['equality', $_[1], $_[3]] }
+    | expr STRICTLY_EQUAL expr	{ ['strictly-equal', $_[1], $_[3]] }
+    | expr NOT_EQUAL expr	{ ['not-equal', $_[1], $_[3]] }
+    | expr NOT_QUITE_EQUAL expr	{ ['not-quite_equal', $_[1], $_[3]] }
+    | expr KW_BSL expr		{ ['bsl', $_[1], $_[3]] }
+    | expr KW_BSR expr		{ ['bsr', $_[1], $_[3]] }
+    | expr KW_BOR expr		{ ['bor', $_[1], $_[3]] }
+    | expr KW_BAND expr		{ ['band', $_[1], $_[3]] }
+    | expr KW_BXOR expr		{ ['bxor', $_[1], $_[3]] }
+    | expr KW_REM expr		{ ['rem', $_[1], $_[3]] }
+    | expr KW_ANDALSO expr	{ ['andalso', $_[1], $_[3]] }
+    | expr KW_ORELSE expr	{ ['orelse', $_[1], $_[3]] }
+    | expr KW_AND expr		{ ['and', $_[1], $_[3]] }
+    | expr KW_OR expr		{ ['or', $_[1], $_[3]] }
+    | KW_NOT expr		{ ['not', $_[2]] }
+    | KW_CATCH expr		{ ['catch-expr', $_[2]] }
+
+    # TODO: unhack this.
+    | expr LARROW expr		{ ['larrow', $_[1], $_[3]] }
+    | expr LDARROW expr		{ ['ldarrow', $_[1], $_[3]] }
+
+    | INTCALL exprlist RPAREN		{ ['intcall', substr($_[1], 0, -1), $_[2]->[1]] }
+    | MACRO LPAREN exprlist RPAREN	{ ['macro-call', substr($_[1], 1), $_[3]->[1]] }
+    | extcall
+    | LPAREN expr RPAREN	{ $_[2] }
+    ;
+
+immexpr:
+      BASE_INTEGER		{ ['base-integer', $_[1]] }
+    | INTEGER			{ ['integer', $_[1]] }
+    | STRING			{ ['string', $_[1]] }
+    | VARIABLE OPENRECORD ATOM  { ['variable-record-access', $_[1], $_[3]] }
+    | VARIABLE newrecord	{ ['variable-record-update', $_[1], @{$_[2]}[1..2]] }
+    | VARIABLE			{ ['variable', $_[1]] }
+    | MACRO			{ ['macro', substr($_[1], 1)] }
+    | LITERAL			{ ['literal', ord(substr($_[1], 1))] }
+    ;
+
+extcall:
+      ATOM COLON INTCALL exprlist RPAREN	{ ['extcall', $_[1], substr($_[3], 0, -1), $_[4]->[1]] }
+    | MACRO COLON INTCALL exprlist RPAREN	{ ['extcall-macro', substr($_[1], 1), substr($_[3], 0, -1), $_[4]->[1]] }
+    | VARIABLE COLON INTCALL exprlist RPAREN	{ ['extcall-var', $_[1], substr($_[3], 0, -1), $_[4]->[1]] }
+    ;
+
+list:
+      LISTOPEN exprlist listcdr LISTCLOSE	{ ['list', $_[2]->[1], $_[3]] }
+    ;
+
+# This is not a full node.
+listcdr:
+						{ undef }
+    | PIPE expr					{ $_[2] }
+    ;
+
+comprehension:
+      LISTOPEN expr COMPREHENSION exprlist LISTCLOSE	{ ['comprehension', $_[2], $_[4]->[1]] }
+    ;
+
+tuple:
+      TUPLEOPEN exprlist TUPLECLOSE	{ ['tuple', $_[2]->[1]] }
+    ;
+
+case:
+      KW_CASE expr KW_OF altlist KW_END	{ ['case', $_[2], $_[4]->[1]] }
+    ;
+
+altlist:
+      alt			{ ['altlist', [$_[1]]] }
+    | altlist SEMICOLON alt	{ ['altlist', [@{$_[1]->[1]}, $_[3]]] }
+    ;
+
+alt:
+      expr whenlist RARROW stmtlist	{ ['alt', $_[1], $_[2]->[1], $_[4]->[1]] }
+    ;
+
+fun:
+      KW_FUN LPAREN exprlist RPAREN whenlist RARROW stmtlist KW_END	{ ['fun-local', $_[3]->[1], $_[5]->[1], $_[7]->[1]] }
+    | KW_FUN ATOM COLON ATOM DIVIDE INTEGER				{ ['fun-ext', $_[2], $_[4], $_[6]] }
+    | KW_FUN MACRO COLON ATOM DIVIDE INTEGER				{ ['fun-ext-macro', substr($_[2], 1), $_[4], $_[6]] }
+    | KW_FUN VARIABLE COLON ATOM DIVIDE INTEGER				{ ['fun-ext-var', $_[2], $_[4], $_[6]] }
+    | KW_FUN ATOM DIVIDE INTEGER					{ ['fun-int', $_[2], $_[4]] }
+    ;
+
+newrecord:
+      OPENRECORD ATOM TUPLEOPEN exprlist TUPLECLOSE		{ ['record-new', $_[2], $_[4]->[1]] }
+    ;
+
+binary:
+      OPENBINARY binarylist CLOSEBINARY				{ ['binary', $_[2]->[1]] }
+    ;
+
+binarylist:
+								{ ['binarylist', []] }
+    | binaryexpr						{ ['binarylist', [$_[1]]] }
+    | binarylist COMMA binaryexpr				{ ['binarylist', [@{$_[1]->[1]}, $_[3]]] }
+    ;
+
+binaryexpr:
+      immexpr
+    | binaryqualified
+    ;
+    
+binaryqualified:
+      VARIABLE optbinarysize optbinaryqualifier 		{ ['binary-qualified', $_[1], $_[2], $_[3]] }
+    ;
+
+# These are not full nodes.
+optbinarysize:
+								{ undef }
+    | COLON immexpr						{ $_[2] }
+    ;
+
+optbinaryqualifier:
+								{ undef }
+    | DIVIDE binaryqualifier					{ $_[2] }
+    ;
+
+binaryqualifier:
+      ATOM
+    | binaryqualifier SUBTRACT ATOM				{ "$_[1]-$_[3]" }
+    ;
+
+receive:
+      KW_RECEIVE altlist after KW_END				{ ['receive', $_[2]->[1], $_[3]] }
+    ;
+
+# This is not a full node.
+after:
+								{ undef }
+    | KW_AFTER expr RARROW exprlist				{ [$_[2], $_[4]->[1]] }
+    ;
+
+try:
+      KW_TRY exprlist opttryof opttrycatch opttryafter KW_END	{ ['try', $_[2]->[1], $_[3], $_[4], $_[5]] }
+    ;
+
+# These are not full nodes.
+opttryof:
+								{ undef }
+    | KW_OF altlist						{ $_[2]->[1] }
+    ;
+
+opttrycatch:
+								{ undef }
+    | KW_CATCH catchaltlist					{ $_[2]->[1] }
+    ;
+
+opttryafter:
+								{ undef }
+    | KW_AFTER exprlist 					{ $_[2]->[1] }
+    ;
+
+catchaltlist:
+      catchalt				{ ['catchaltlist', [$_[1]]] }
+    | catchaltlist SEMICOLON catchalt	{ ['catchaltlist', [@{$_[1]->[1]}, $_[3]]] }
+    ;
+
+catchalt:
+      CATCH_CLASS expr whenlist RARROW stmtlist	{ ['catchalt', substr($_[1], 0, -1), $_[2], $_[3]->[1], $_[5]->[1]] }
+    | expr whenlist RARROW stmtlist		{ ['catchalt', undef, $_[1], $_[2]->[1], $_[4]->[1]] }
+    ;
+
+if:
+      KW_IF iflist KW_END			{ ['if', $_[2]->[1]] }
+    ;
+
+iflist:
+      ifexpr			{ ['iflist', [$_[1]]] }
+    | iflist SEMICOLON ifexpr	{ ['iflist', [@{$_[1]->[1]}, $_[3]]] }
+    ;
+
+ifexpr:
+      ifseq RARROW stmtlist	{ ['ifexpr', $_[1], $_[3]->[1]] }
+    ;
+
+ifseq:
+      expr		{ ['ifseq', [$_[2]]] }
+    | ifseq COMMA expr	{ ['ifseq', [@{$_[1]->[1]}, $_[3]]] }
+    ;
+%%
+
+=over 4
+
+=item C<new>
+
+Creates a new parser object. See L<Parse::Yapp> for more information.
+
+=cut
+
+1;
+
+# vim: set sw=4 filetype=perl:

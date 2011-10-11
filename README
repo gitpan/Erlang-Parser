@@ -1,0 +1,73 @@
+NAME
+    Erlang::Parser - Erlang source code parser
+
+VERSION
+    Version 0.1
+
+SYNOPSIS
+        use Erlang::Parser;
+
+        my $tree = Erlang::Parser->parse(\*DATA);
+        Erlang::Parser->print_tree(*STDOUT, $tree);
+
+DESCRIPTION
+    Erlang::Parser is an Erlang source code parser. You can feed "parse()"
+    any fragment of code which would be acceptable at the top-level of a
+    ".erl" file, including a full file.
+
+  Methods
+    "parse"
+        Parses an top-level Erlang declarations from a string, list of lines
+        of code, or filehandle. Returns a list of top-level nodes.
+
+            my @nodes = Erlang::Parser->parse(
+                'myfun(X) -> X + X.',
+                'myfun(X, Y) -> X + Y.',
+            );
+
+    "error"
+        Called when an error occurs. Reports based on the parser given as
+        the first argument.
+
+    "print_nodes"
+        Prints the given nodes.
+
+            my @nodes = Erlang::Parser->parse(\*DATA);
+            Erlang::Parser->print_nodes($fh, @nodes);
+
+AUTHOR
+    Anneli Cuss, "<anneli at cpan.org>"
+
+SUPPORT
+    You can find documentation for Erlang::Parser with the perldoc command.
+
+        perldoc Erlang::Parser
+
+    Other places of interest:
+
+    *   GitHub: source code repository
+
+        <http://github.com/anneli/Erlang--Parser>
+
+    *   GitHub: open an issue
+
+        <http://github.com/anneli/Erlang--Parser/issues>
+
+    *   Mailing list
+
+        <http://groups.google.com/group/erlang--parser-devel>,
+        <erlang--parser-devel@googlegroups.com>
+
+    *   Twitter: the author
+
+        <http://twitter.com/unnali>
+
+LICENSE AND COPYRIGHT
+    Copyright 2011 Anneli Cuss.
+
+    This program is free software; you can redistribute it and/or modify it
+    under the terms of either: the GNU General Public License as published
+    by the Free Software Foundation; or the Artistic License.
+
+    See http://dev.perl.org/licenses/ for more information.
+
