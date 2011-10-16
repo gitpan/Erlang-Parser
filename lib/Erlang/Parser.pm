@@ -6,7 +6,6 @@ package Erlang::Parser;
 
 use strict;
 use warnings;
-use 5.014;
 
 use Erlang::Parser::Dumper;
 use Erlang::Parser::Lexer;
@@ -40,11 +39,11 @@ Erlang::Parser - Erlang source code parser
 
 =head1 VERSION
 
-Version 0.1
+Version 0.2
 
 =cut
 
-our $VERSION = '0.1';
+our $VERSION = '0.2';
 
 =head1 SYNOPSIS
 

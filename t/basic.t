@@ -2,7 +2,6 @@
 
 use strict;
 use warnings;
-use 5.014;
 
 use Erlang::Parser;
 
@@ -19,7 +18,6 @@ close $fh;
 
 ok( $pp,		'the test data should pretty-print' );
 
-say STDERR $pp;
 my @pp_nodes = Erlang::Parser->parse($pp);
 
 ok( @pp_nodes,		'the pretty-printed test data should parse' );

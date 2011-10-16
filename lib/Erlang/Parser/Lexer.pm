@@ -6,7 +6,6 @@ package Erlang::Parser::Lexer;
 
 use strict;
 use warnings;
-use 5.014;
 
 use Parse::Lex;
 
@@ -14,7 +13,7 @@ use Parse::Lex;
 our $lexer_string = '';
 our $skip_token = 0;
 
-our ($EXTFUN, $INTCALL, $ATOM, $FLOAT, $INTEGER, $BASE_INTEGER, $DIRECTIVE, $LIT, $STRING, $CONTENT);
+our ($ATOM, $FLOAT, $INTEGER, $BASE_INTEGER, $LIT, $STRING, $CONTENT);
 our ($ACONTENT, $ALIT, $AATOM, $OPENATOM);
 our ($OPENRECORD, $RECORDACCESS);
 our ($OPENSTRING, $WHITESPACE, $COMMENT, $LPAREN, $RPAREN, $PERIOD, $LARROW, $LDARROW, $RARROW);
@@ -24,7 +23,7 @@ our ($KW_CASE, $KW_RECEIVE, $KW_AFTER, $KW_OF, $KW_END, $KW_FUN, $KW_WHEN, $KW_D
 our ($OPENBINARY, $CLOSEBINARY, $LISTADD, $LISTSUBTRACT, $EQUALITY, $NOT_EQUAL, $STRICTLY_EQUAL);
 our ($KW_BSL, $KW_BSR, $KW_BOR, $KW_BAND, $KW_BXOR, $KW_REM, $KW_TRY, $KW_CATCH, $LTE, $GTE, $LT, $GT);
 our ($SEND, $LITERAL, $PIPE, $COMPREHENSION, $CATCH_CLASS, $KW_ANDALSO, $KW_ORELSE, $KW_AND, $KW_OR, $KW_BEGIN);
-our ($KW_NOT, $KW_IF, $NOT_QUITE_EQUAL);
+our ($KW_NOT, $KW_IF, $NOT_QUITE_EQUAL, $NEG);
 
 our @tokens = (
     KW_CASE		=> q/case(?!\w)/,
@@ -50,18 +49,15 @@ our @tokens = (
     KW_BEGIN		=> q/begin(?!\w)/,
     KW_NOT		=> q/not(?!\w)/,
     KW_IF		=> q/if(?!\w)/,
-    CATCH_CLASS		=> q/(error|exit|throw):/,
-    INTCALL		=> q/(\w+)\(/,
     ATOM		=> q/[a-z]([\w@.]*\w)?/,
     VARIABLE		=> q/[A-Z_]\w*/,
     MACRO		=> q/\?(\w+)/,
-    FLOAT		=> q/-?\d+\.\d+([eE][+-]?\d+)?/,
-    BASE_INTEGER	=> q/-?\d+#[a-zA-Z0-9]+/,
-    INTEGER		=> q/-?\d+/,
-    TODODIRECTIVE	=> [q/-(type|opaque|spec|if|endif)/, q/[^.]*/, q/\./], sub {
+    FLOAT		=> q/\d+\.\d+([eE][+-]?\d+)?/,
+    BASE_INTEGER	=> q/\d+#[a-zA-Z0-9]+/,
+    INTEGER		=> q/\d+/,
+    TODODIRECTIVE	=> [q/-(type|opaque|spec|if|endif)/, q/.*?/, q/\.\s*($|[\r\n])/], sub {
 	$skip_token = 1;
     },
-    DIRECTIVE		=> q/-(\w+)\(/,
     OPENRECORD		=> q/#/,
     RECORDACCESS	=> q/\.(\w+)/,
 
@@ -138,7 +134,7 @@ our @tokens = (
     COMPREHENSION	=> q/\|\|/,
     PIPE		=> q/\|/,
     SEND		=> q/!/,
-    LITERAL		=> q/\$(\\\\.|.)/,
+    LITERAL		=> q/\$(\\\\.|(?s:.))/,
     ERROR		=> q/.*/, sub { die qq{can't analyse: "$_[1]"} },
 );
 
@@ -166,7 +162,7 @@ sub lex {
 	    $skip_token = 0;
 	}
 
-	print STDERR $token->name, "(", $token->text, ") ";
+	# print STDERR $token->name, "(", $token->text, ") ";
 	return ($token->name, $token->text);
     }
 }

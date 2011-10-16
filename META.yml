@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Erlang-Parser
-version:            0.1
+version:            0.2
 abstract:           Erlang source code parser
 author:
     - Anneli Cuss <anneli@cpan.org>
