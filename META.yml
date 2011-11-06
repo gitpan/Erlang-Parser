@@ -1,24 +1,26 @@
---- #YAML:1.0
-name:               Erlang-Parser
-version:            0.2
-abstract:           Erlang source code parser
+---
+abstract: 'Erlang source code parser'
 author:
-    - Anneli Cuss <anneli@cpan.org>
-license:            perl
-distribution_type:  module
-configure_requires:
-    ExtUtils::MakeMaker:  0
+  - 'Anneli Cuss <anneli@cpan.org>'
 build_requires:
-    ExtUtils::MakeMaker:  0
-requires:
-    Parse::Lex:   2.20
-    Parse::Yapp:  0
-    Test::More:   0
-no_index:
-    directory:
-        - t
-        - inc
-generated_by:       ExtUtils::MakeMaker version 6.57_05
+  ExtUtils::MakeMaker: 0
+configure_requires:
+  ExtUtils::MakeMaker: 0
+dynamic_config: 1
+generated_by: 'ExtUtils::MakeMaker version 6.62, CPAN::Meta::Converter version 2.112150'
+license: perl
 meta-spec:
-    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
-    version:  1.4
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Erlang-Parser
+no_index:
+  directory:
+    - t
+    - inc
+requires:
+  Moose: 0
+  Parse::Lex: 2.20
+  Parse::Yapp: 0
+  Test::More: 0
+  Test::Simple: 0
+version: 0.3

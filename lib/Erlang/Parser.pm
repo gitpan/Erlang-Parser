@@ -7,7 +7,6 @@ package Erlang::Parser;
 use strict;
 use warnings;
 
-use Erlang::Parser::Dumper;
 use Erlang::Parser::Lexer;
 use Erlang::Parser::Parser;
 
@@ -27,30 +26,37 @@ sub error {
     print STDERR ".\n";
 }
 
-sub print_nodes {
-    my ($class, $fh, @nodes) = @_;
-    Erlang::Parser::Dumper->depth(0);
-    Erlang::Parser::Dumper->print_node($fh, @$_) foreach (@nodes);
-}
-
 =head1 NAME
 
 Erlang::Parser - Erlang source code parser
 
 =head1 VERSION
 
-Version 0.2
+This document describes version 0.3 of Erlang::Parser released 2011-11-06.
 
 =cut
 
-our $VERSION = '0.2';
+our $VERSION = '0.3';
 
 =head1 SYNOPSIS
 
     use Erlang::Parser;
 
-    my $tree = Erlang::Parser->parse(\*DATA);
-    Erlang::Parser->print_tree(*STDOUT, $tree);
+    # Parse the code found in DATA; return all root-level nodes.
+    my @nodes = Erlang::Parser->parse(\*DATA);
+
+    # Each object in @nodes implements the Erlang::Parser::Node role, which
+    # is the function 'print'. It takes one argument, the filehandle to
+    # pretty-print to.
+    $_->print(*STDOUT) for @nodes;
+
+    # Use the accessors of each node type to get at the innards:
+    my ($directive, $def) = Erlang::Parser->parse(<<ERL);
+	-export([my_fun/2]).
+	my_fun(X, Y) -> X + Y.
+    ERL
+
+    # Have fun!
 
 =head1 DESCRIPTION
 
@@ -77,18 +83,11 @@ or filehandle.  Returns a list of top-level nodes.
 Called when an error occurs. Reports based on the parser given as the first
 argument.
 
-=item C<print_nodes>
-
-Prints the given nodes.
-
-    my @nodes = Erlang::Parser->parse(\*DATA);
-    Erlang::Parser->print_nodes($fh, @nodes);
-
 =back
 
 =head1 AUTHOR
 
-Anneli Cuss, C<< <anneli at cpan.org> >>
+Anneli Cuss (anneli@cpan.org)
 
 =head1 SUPPORT
 
@@ -120,13 +119,11 @@ L<http://twitter.com/unnali>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2011 Anneli Cuss.
+Copyright (c) 2011, Anneli Cuss C<< <ANNELI@CPAN.org> >>. All rights
+reserved.
 
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
-
-See http://dev.perl.org/licenses/ for more information.
+This module is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself. See L<perlartistic>.
 
 =cut
 

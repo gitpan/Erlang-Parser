@@ -13,7 +13,7 @@ my @nodes = Erlang::Parser->parse($data);
 ok( @nodes,		'the test data should parse' );
 
 open my $fh, ">", \my $pp;
-Erlang::Parser->print_nodes($fh, @nodes);
+$_->print($fh) for (@nodes);
 close $fh;
 
 ok( $pp,		'the test data should pretty-print' );
@@ -23,7 +23,7 @@ my @pp_nodes = Erlang::Parser->parse($pp);
 ok( @pp_nodes,		'the pretty-printed test data should parse' );
 
 open my $fh2, ">", \my $pp2;
-Erlang::Parser->print_nodes($fh2, @pp_nodes);
+$_->print($fh2) for (@pp_nodes);
 close $fh2;
 
 ok( $pp2,		'the parsed pretty-printed test data should pretty-print' );

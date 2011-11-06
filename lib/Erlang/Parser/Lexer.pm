@@ -12,18 +12,19 @@ use Parse::Lex;
 # NOTE: not re-entrant due to P::L fun.
 our $lexer_string = '';
 our $skip_token = 0;
+our $lex_failed = 0;
 
 our ($ATOM, $FLOAT, $INTEGER, $BASE_INTEGER, $LIT, $STRING, $CONTENT);
 our ($ACONTENT, $ALIT, $AATOM, $OPENATOM);
 our ($OPENRECORD, $RECORDACCESS);
 our ($OPENSTRING, $WHITESPACE, $COMMENT, $LPAREN, $RPAREN, $PERIOD, $LARROW, $LDARROW, $RARROW);
 our ($LISTOPEN, $LISTCLOSE, $DIVIDE, $ADD, $SUBTRACT, $MULTIPLY, $COMMA, $SEMICOLON, $COLON);
-our ($ERROR, $VARIABLE, $MACRO, $TUPLEOPEN, $TUPLECLOSE, $TODODIRECTIVE, $EQUALS);
+our ($ERROR, $VARIABLE, $MACRO, $TUPLEOPEN, $TUPLECLOSE, $TODODIRECTIVE, $MATCH);
 our ($KW_CASE, $KW_RECEIVE, $KW_AFTER, $KW_OF, $KW_END, $KW_FUN, $KW_WHEN, $KW_DIV);
-our ($OPENBINARY, $CLOSEBINARY, $LISTADD, $LISTSUBTRACT, $EQUALITY, $NOT_EQUAL, $STRICTLY_EQUAL);
+our ($OPENBINARY, $CLOSEBINARY, $LISTADD, $LISTSUBTRACT, $EQUAL, $EXACTLY_NOT_EQUAL, $EXACTLY_EQUAL);
 our ($KW_BSL, $KW_BSR, $KW_BOR, $KW_BAND, $KW_BXOR, $KW_REM, $KW_TRY, $KW_CATCH, $LTE, $GTE, $LT, $GT);
 our ($SEND, $LITERAL, $PIPE, $COMPREHENSION, $CATCH_CLASS, $KW_ANDALSO, $KW_ORELSE, $KW_AND, $KW_OR, $KW_BEGIN);
-our ($KW_NOT, $KW_IF, $NOT_QUITE_EQUAL, $NEG);
+our ($KW_NOT, $KW_IF, $NOT_EQUAL, $NEG);
 
 our @tokens = (
     KW_CASE		=> q/case(?!\w)/,
@@ -115,11 +116,11 @@ our @tokens = (
     TUPLECLOSE		=> q/}/,
     LISTSUBTRACT	=> q/--/,
     LISTADD		=> q/\+\+/,
-    EQUALITY		=> q/==/,
-    STRICTLY_EQUAL	=> q/=:=/,
-    NOT_QUITE_EQUAL	=> q/\/=/,
-    NOT_EQUAL		=> q/=\/=/,
-    EQUALS		=> q/=/,
+    EQUAL		=> q/==/,
+    EXACTLY_EQUAL	=> q/=:=/,
+    NOT_EQUAL	=> q/\/=/,
+    EXACTLY_NOT_EQUAL		=> q/=\/=/,
+    MATCH		=> q/=/,
     DIVIDE		=> q/\//,
     ADD			=> q/\+/,
     SUBTRACT		=> q/-/,
@@ -135,7 +136,7 @@ our @tokens = (
     PIPE		=> q/\|/,
     SEND		=> q/!/,
     LITERAL		=> q/\$(\\\\.|(?s:.))/,
-    ERROR		=> q/.*/, sub { die qq{can't analyse: "$_[1]"} },
+    ERROR		=> q/.*/, sub { $lex_failed = $_[1]; },
 );
 
 Parse::Lex->exclusive(qw(dqstr sqatom));
@@ -150,11 +151,15 @@ sub lex {
 	my $token;
 
 	$skip_token = 0;
+	$lex_failed = '';
 
 	LOOP:while (1) {
 	    $token = $lex->next;
 
-	    if ($lex->eoi or not $token) {
+	    if ($lex->eoi) {
+		return ('', undef);
+	    } elsif ($lex_failed) {
+		print STDERR "can't analyse: \"", $lex_failed, "\"\n";
 		return ('', undef);
 	    } elsif (not $skip_token) {
 		last LOOP;
