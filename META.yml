@@ -23,4 +23,4 @@ requires:
   Parse::Yapp: 0
   Test::More: 0
   Test::Simple: 0
-version: 0.3
+version: 0.4

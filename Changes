@@ -5,3 +5,9 @@ Revision history for Erlang::Parser
 
 0.2	2011-10-16
 	mochiweb parses entirely.
+
+0.3	2011-11-06
+	OO-ised the interface. Documented the nodes.
+
+0.4	2011-11-07
+	Including Parser.pm with the distribution.

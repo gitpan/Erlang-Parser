@@ -2,6 +2,7 @@ Changes
 lib/Erlang/Parser.pm
 lib/Erlang/Parser/Lexer.pm
 lib/Erlang/Parser/Parser.yp
+lib/Erlang/Parser/Parser.pm
 lib/Erlang/Parser/Node.pm
 lib/Erlang/Parser/Node/Alt.pm
 lib/Erlang/Parser/Node/Atom.pm

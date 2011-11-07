@@ -32,11 +32,11 @@ Erlang::Parser - Erlang source code parser
 
 =head1 VERSION
 
-This document describes version 0.3 of Erlang::Parser released 2011-11-06.
+This document describes version 0.4 of Erlang::Parser released 2011-11-07.
 
 =cut
 
-our $VERSION = '0.3';
+our $VERSION = '0.4';
 
 =head1 SYNOPSIS
 
