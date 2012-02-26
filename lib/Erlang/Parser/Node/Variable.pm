@@ -1,4 +1,4 @@
-# Copyright 2011 Anneli Cuss. ( anneli AT cpan DOT org )
+# Copyright 2011-2012 Arlen Cuss. ( anneli AT cpan DOT org )
 # This is free software; you can redistribute it and/or modify it under the
 # same terms as Perl itself.
 
@@ -10,10 +10,10 @@ with 'Erlang::Parser::Node';
 has 'variable' => (is => 'rw', required => 1, isa => 'Str');
 
 sub print {
-    my ($self, $fh, $depth) = @_;
-    $depth ||= 0;
+	my ($self, $fh, $depth) = @_;
+	$depth ||= 0;
 
-    print $fh $self->variable;
+	print $fh $self->variable;
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -48,10 +48,10 @@ Pretty-prints the node to its filehandle argument.
 
 =head1 EXAMPLE
 
-    Argument
+	Argument
 
 =cut
 
 1;
 
-# vim: set sw=4:
+# vim: set sw=4 ts=4:

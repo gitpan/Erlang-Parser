@@ -1,4 +1,4 @@
-# Copyright 2011 Anneli Cuss. ( anneli AT cpan DOT org )
+# Copyright 2011-2012 Arlen Cuss. ( anneli AT cpan DOT org )
 # This is free software; you can redistribute it and/or modify it under the
 # same terms as Perl itself.
 
@@ -12,17 +12,17 @@ has 'size'      => (is => 'rw', required => 0, isa => 'Maybe[Erlang::Parser::Nod
 has 'qualifier' => (is => 'rw', required => 0, isa => 'Maybe[Str]');
 
 sub print {
-    my ($self, $fh, $depth) = @_;
-    $depth ||= 0;
+	my ($self, $fh, $depth) = @_;
+	$depth ||= 0;
 
-    print $fh '(';
-    $self->output->print($fh, $depth);
-    print $fh ')';
-    if (defined $self->size) {
-	print $fh ':';
-	$self->size->print($fh, $depth);
-    }
-    print $fh '/', $self->qualifier if defined $self->qualifier;
+	print $fh '(';
+	$self->output->print($fh, $depth);
+	print $fh ')';
+	if (defined $self->size) {
+		print $fh ':';
+		$self->size->print($fh, $depth);
+	}
+	print $fh '/', $self->qualifier if defined $self->qualifier;
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -67,10 +67,10 @@ Pretty-prints the node to its filehandle argument.
 
 =head1 EXAMPLE
 
-    X:8/integer-signed-big
+	X:8/integer-signed-big
 
 =cut
 
 1;
 
-# vim: set sw=4:
+# vim: set sw=4 ts=4:

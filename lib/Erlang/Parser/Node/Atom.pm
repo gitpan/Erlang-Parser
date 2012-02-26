@@ -1,4 +1,4 @@
-# Copyright 2011 Anneli Cuss. ( anneli AT cpan DOT org )
+# Copyright 2011-2012 Arlen Cuss. ( anneli AT cpan DOT org )
 # This is free software; you can redistribute it and/or modify it under the
 # same terms as Perl itself.
 
@@ -10,19 +10,19 @@ with 'Erlang::Parser::Node';
 has 'atom' => (is => 'rw', required => 1, isa => 'Str');
 
 sub print {
-    my ($self, $fh, $depth) = @_;
-    $depth ||= 0;
+	my ($self, $fh, $depth) = @_;
+	$depth ||= 0;
 
-    if (not $self->atom =~ /^[^a-z]|[^a-zA-Z_0-9]/
-	and not $self->atom =~ /^(case|receive|after|of|end|fun|when|div|bs[lr]|bx?or|band|rem|try|catch|andalso|and|orelse|or|begin|not|if)$/) {
-	print $fh $self->atom;
-    } else {
-	my $atom = $self->atom;
-	$atom =~ s/\\/\\\\/g;
-	$atom =~ s/'/\\'/g;
+	if (not $self->atom =~ /^[^a-z]|[^a-zA-Z_0-9]/
+		and not $self->atom =~ /^(case|receive|after|of|end|fun|when|div|bs[lr]|bx?or|band|rem|try|catch|andalso|and|orelse|or|begin|not|if)$/) {
+		print $fh $self->atom;
+	} else {
+		my $atom = $self->atom;
+		$atom =~ s/\\/\\\\/g;
+		$atom =~ s/'/\\'/g;
 
-	print $fh "'$atom'";
-    }
+		print $fh "'$atom'";
+	}
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -57,10 +57,10 @@ Pretty-prints the node to its filehandle argument.
 
 =head1 EXAMPLE
 
-    my.atom@is.long.
+	my.atom@is.long.
 
 =cut
 
 1;
 
-# vim: set sw=4:
+# vim: set sw=4 ts=4:

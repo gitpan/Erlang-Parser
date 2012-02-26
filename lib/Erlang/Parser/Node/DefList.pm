@@ -1,4 +1,4 @@
-# Copyright 2011 Anneli Cuss. ( anneli AT cpan DOT org )
+# Copyright 2011-2012 Arlen Cuss. ( anneli AT cpan DOT org )
 # This is free software; you can redistribute it and/or modify it under the
 # same terms as Perl itself.
 
@@ -10,21 +10,21 @@ with 'Erlang::Parser::Node';
 has 'defs' => (is => 'rw', default => sub {[]}, isa => 'ArrayRef[Erlang::Parser::Node::Def]');
 
 sub _append {
-    my ($self, $expr) = @_;
-    push @{$self->defs}, $expr;
-    $self;
+	my ($self, $expr) = @_;
+	push @{$self->defs}, $expr;
+	$self;
 }
 
 sub print {
-    my ($self, $fh, $depth) = @_;
-    $depth ||= 0;
+	my ($self, $fh, $depth) = @_;
+	$depth ||= 0;
 
-    my $first = 1;
-    foreach (@{$self->defs}) {
-	if ($first) { $first = 0 } else { print $fh ";\n", "\t" x $depth }
-	$_->print($fh, $depth);
-    }
-    print $fh ".\n";
+	my $first = 1;
+	foreach (@{$self->defs}) {
+		if ($first) { $first = 0 } else { print $fh ";\n", "\t" x $depth }
+		$_->print($fh, $depth);
+	}
+	print $fh ".\n";
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -59,13 +59,13 @@ Pretty-prints the node to its filehandle argument.
 
 =head1 EXAMPLE
 
-    fac(0) ->
-	1;
-    fac(N) ->
-	N * fac(N - 1)
+	fac(0) ->
+		1;
+	fac(N) ->
+		N * fac(N - 1)
 
 =cut
 
 1;
 
-# vim: set sw=4:
+# vim: set sw=4 ts=4:

@@ -3,11 +3,18 @@ Revision history for Erlang::Parser
 0.1     2011-10-09
         First version.
 
-0.2	2011-10-16
-	mochiweb parses entirely.
+0.2     2011-10-16
+        mochiweb parses entirely.
 
-0.3	2011-11-06
-	OO-ised the interface. Documented the nodes.
+0.3     2011-11-06
+        OO-ised the interface. Documented the nodes.
 
-0.4	2011-11-07
-	Including Parser.pm with the distribution.
+0.4     2011-11-07
+        Including Parser.pm with the distribution.
+
+0.5     2012-02-27
+        Error handling robustness; older Perl compatibility fixes.
+            -- Dominik Schulz <TEX@cpan.org>
+        Fixed parsing precedence issues.
+        Hard tabs across all code.
+        Add some missing keywords.

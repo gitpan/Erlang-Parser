@@ -1,4 +1,4 @@
-# Copyright 2011 Anneli Cuss. ( anneli AT cpan DOT org )
+# Copyright 2011-2012 Arlen Cuss. ( anneli AT cpan DOT org )
 # This is free software; you can redistribute it and/or modify it under the
 # same terms as Perl itself.
 
@@ -10,23 +10,23 @@ with 'Erlang::Parser::Node';
 has 'exprs' => (is => 'rw', required => 1, isa => 'ArrayRef[Erlang::Parser::Node]');
 
 sub print {
-    my ($self, $fh, $depth) = @_;
-    $depth ||= 0;
+	my ($self, $fh, $depth) = @_;
+	$depth ||= 0;
 
-    print $fh "begin\n";
+	print $fh "begin\n";
 
-    $depth++;
-    print $fh "\t" x $depth;
+	$depth++;
+	print $fh "\t" x $depth;
 
-    my $first = 1;
-    foreach (@{$self->exprs}) {
-	if ($first) { $first = 0 } else { print $fh ",\n", "\t" x $depth }
-	$_->print($fh, $depth);
-    }
+	my $first = 1;
+	foreach (@{$self->exprs}) {
+		if ($first) { $first = 0 } else { print $fh ",\n", "\t" x $depth }
+		$_->print($fh, $depth);
+	}
 
-    $depth--;
+	$depth--;
 
-    print $fh "\n", "\t" x $depth, 'end';
+	print $fh "\n", "\t" x $depth, 'end';
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -62,13 +62,13 @@ Pretty-prints the node to its filehandle argument.
 
 =head1 EXAMPLE
 
-    begin
-        do_this(),
+	begin
+		do_this(),
 	xyz:do_that()
-    end
+	end
 
 =cut
 
 1;
 
-# vim: set sw=4:
+# vim: set sw=4 ts=4:

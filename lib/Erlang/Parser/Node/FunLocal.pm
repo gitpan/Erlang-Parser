@@ -1,4 +1,4 @@
-# Copyright 2011 Anneli Cuss. ( anneli AT cpan DOT org )
+# Copyright 2011-2012 Arlen Cuss. ( anneli AT cpan DOT org )
 # This is free software; you can redistribute it and/or modify it under the
 # same terms as Perl itself.
 
@@ -10,19 +10,19 @@ with 'Erlang::Parser::Node';
 has 'cases' => (is => 'rw', required => 1, isa => 'ArrayRef[Erlang::Parser::Node::FunLocalCase]');
 
 sub print {
-    my ($self, $fh, $depth) = @_;
-    $depth ||= 0;
+	my ($self, $fh, $depth) = @_;
+	$depth ||= 0;
 
-    print $fh 'fun ';
+	print $fh 'fun ';
 
-    my $first = 1;
-    foreach (@{$self->cases}) {
-	if ($first) { $first = 0 } else { print $fh '; ' }
+	my $first = 1;
+	foreach (@{$self->cases}) {
+		if ($first) { $first = 0 } else { print $fh '; ' }
 
-	$_->print($fh, $depth);
-    }
+		$_->print($fh, $depth);
+	}
 
-    print $fh ' end';
+	print $fh ' end';
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -58,10 +58,10 @@ Pretty-prints the node to its filehandle argument.
 
 =head1 EXAMPLE
 
-    fun (0) -> 1; (N) -> N + 1 end   % wtf does this do
+	fun (0) -> 1; (N) -> N + 1 end	 % wtf does this do
 
 =cut
 
 1;
 
-# vim: set sw=4:
+# vim: set sw=4 ts=4:

@@ -1,4 +1,4 @@
-# Copyright 2011 Anneli Cuss. ( anneli AT cpan DOT org )
+# Copyright 2011-2012 Arlen Cuss. ( anneli AT cpan DOT org )
 # This is free software; you can redistribute it and/or modify it under the
 # same terms as Perl itself.
 
@@ -12,17 +12,17 @@ has 'function' => (is => 'rw', required => 1, isa => 'Str');
 has 'arity'    => (is => 'rw', required => 1, isa => 'Int');
 
 sub print {
-    my ($self, $fh, $depth) = @_;
-    $depth ||= 0;
+	my ($self, $fh, $depth) = @_;
+	$depth ||= 0;
 
-    print $fh 'fun ';
+	print $fh 'fun ';
 
-    if (defined $self->module) {
-	$self->module->print($fh, $depth);
-	print $fh ':';
-    }
+	if (defined $self->module) {
+		$self->module->print($fh, $depth);
+		print $fh ':';
+	}
 
-    print $fh $self->function, '/', $self->arity;
+	print $fh $self->function, '/', $self->arity;
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -67,10 +67,10 @@ Pretty-prints the node to its filehandle argument.
 
 =head1 EXAMPLE
 
-    fun ?MODULE:code_change/0
+	fun ?MODULE:code_change/0
 
 =cut
 
 1;
 
-# vim: set sw=4:
+# vim: set sw=4 ts=4:

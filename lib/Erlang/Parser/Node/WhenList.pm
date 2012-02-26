@@ -1,4 +1,4 @@
-# Copyright 2011 Anneli Cuss. ( anneli AT cpan DOT org )
+# Copyright 2011-2012 Arlen Cuss. ( anneli AT cpan DOT org )
 # This is free software; you can redistribute it and/or modify it under the
 # same terms as Perl itself.
 
@@ -11,36 +11,36 @@ has 'groups' => (is => 'rw', default => sub {[]}, isa => 'ArrayRef[ArrayRef[Erla
 has 'exprs'  => (is => 'rw', default => sub {[]}, isa => 'ArrayRef[Erlang::Parser::Node]');
 
 sub _append {
-    my ($self, $expr) = @_;
-    push @{$self->exprs}, $expr;
-    $self;
+	my ($self, $expr) = @_;
+	push @{$self->exprs}, $expr;
+	$self;
 }
 
 sub _group () {
-    my $self = shift;
-    push @{$self->groups}, $self->exprs if @{$self->exprs};
-    $self->exprs([]);
-    $self;
+	my $self = shift;
+	push @{$self->groups}, $self->exprs if @{$self->exprs};
+	$self->exprs([]);
+	$self;
 }
 
 sub print {
-    my ($self, $fh, $depth) = @_;
-    $depth ||= 0;
+	my ($self, $fh, $depth) = @_;
+	$depth ||= 0;
 
-    if (@{$self->groups}) {
-	print $fh 'when ';
-	my $first = 1;
-	foreach (@{$self->groups}) {
-	    if ($first) { $first = 0 } else { print $fh '; ' }
+	if (@{$self->groups}) {
+		print $fh 'when ';
+		my $first = 1;
+		foreach (@{$self->groups}) {
+			if ($first) { $first = 0 } else { print $fh '; ' }
 
-	    my $infirst = 1;
-	    foreach (@$_) {
-		if ($infirst) { $infirst = 0 } else { print $fh ', ' }
-		$_->print($fh, $depth);
-	    }
+			my $infirst = 1;
+			foreach (@$_) {
+				if ($infirst) { $infirst = 0 } else { print $fh ', ' }
+				$_->print($fh, $depth);
+			}
+		}
+		print $fh ' ';
 	}
-	print $fh ' ';
-    }
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -84,10 +84,10 @@ Pretty-prints the node to its filehandle argument.
 
 =head1 EXAMPLE
 
-    when is_bool(X), is_bool(Y); X < Y
+	when is_bool(X), is_bool(Y); X < Y
 
 =cut
 
 1;
 
-# vim: set sw=4:
+# vim: set sw=4 ts=4:

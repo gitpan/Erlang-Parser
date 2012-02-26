@@ -1,4 +1,4 @@
-# Copyright 2011 Anneli Cuss. ( anneli AT cpan DOT org )
+# Copyright 2011-2012 Arlen Cuss. ( anneli AT cpan DOT org )
 # This is free software; you can redistribute it and/or modify it under the
 # same terms as Perl itself.
 
@@ -10,18 +10,18 @@ with 'Erlang::Parser::Node';
 has 'bexprs' => (is => 'rw', required => 1, isa => 'ArrayRef[Erlang::Parser::Node::BinaryExpr]');
 
 sub print {
-    my ($self, $fh, $depth) = @_;
-    $depth ||= 0;
+	my ($self, $fh, $depth) = @_;
+	$depth ||= 0;
 
-    print $fh '<<';
+	print $fh '<<';
 
-    my $first = 1;
-    foreach (@{$self->bexprs}) {
-	if ($first) { $first = 0 } else { print $fh ', ' }
-	$_->print($fh, $depth);
-    }
+	my $first = 1;
+	foreach (@{$self->bexprs}) {
+		if ($first) { $first = 0 } else { print $fh ', ' }
+		$_->print($fh, $depth);
+	}
 
-    print $fh '>>';
+	print $fh '>>';
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -57,10 +57,10 @@ Pretty-prints the node to its filehandle argument.
 
 =head1 EXAMPLE
 
-    <<"abc">>
+	<<"abc">>
 
 =cut
 
 1;
 
-# vim: set sw=4:
+# vim: set sw=4 ts=4:

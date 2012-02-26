@@ -1,4 +1,4 @@
-# Copyright 2011 Anneli Cuss. ( anneli AT cpan DOT org )
+# Copyright 2011-2012 Arlen Cuss. ( anneli AT cpan DOT org )
 # This is free software; you can redistribute it and/or modify it under the
 # same terms as Perl itself.
 
@@ -13,72 +13,72 @@ has 'catch' => (is => 'rw', required => 0, isa => 'Maybe[ArrayRef[Erlang::Parser
 has 'aft'   => (is => 'rw', required => 0, isa => 'Maybe[ArrayRef[Erlang::Parser::Node]]');
 
 sub print {
-    my ($self, $fh, $depth) = @_;
-    $depth ||= 0;
+	my ($self, $fh, $depth) = @_;
+	$depth ||= 0;
 
-    print $fh "try\n";
-
-    $depth++;
-    print $fh "\t" x $depth;
-
-    my $first = 1;
-    foreach (@{$self->exprs}) {
-	if ($first) { $first = 0 } else { print $fh ",\n", "\t" x $depth }
-	$_->print($fh, $depth);
-    }
-
-    $depth--;
-    print $fh "\n", "\t" x $depth;
-
-    if (defined $self->of and @{$self->of}) {
-	print $fh "of\n";
+	print $fh "try\n";
 
 	$depth++;
 	print $fh "\t" x $depth;
 
 	my $first = 1;
-	foreach (@{$self->of}) {
-	    if ($first) { $first = 0 } else { print $fh ";\n", "\t" x $depth }
-	    $_->print($fh, $depth);
+	foreach (@{$self->exprs}) {
+		if ($first) { $first = 0 } else { print $fh ",\n", "\t" x $depth }
+		$_->print($fh, $depth);
 	}
 
 	$depth--;
 	print $fh "\n", "\t" x $depth;
-    }
 
-    if (defined $self->catch and @{$self->catch}) {
-	print $fh "catch\n";
+	if (defined $self->of and @{$self->of}) {
+		print $fh "of\n";
 
-	$depth++;
-	print $fh "\t" x $depth;
+		$depth++;
+		print $fh "\t" x $depth;
 
-	my $first = 1;
-	foreach (@{$self->catch}) {
-	    if ($first) { $first = 0 } else { print $fh ";\n", "\t" x $depth }
-	    $_->print($fh, $depth);
+		my $first = 1;
+		foreach (@{$self->of}) {
+			if ($first) { $first = 0 } else { print $fh ";\n", "\t" x $depth }
+			$_->print($fh, $depth);
+		}
+
+		$depth--;
+		print $fh "\n", "\t" x $depth;
 	}
 
-	$depth--;
-	print $fh "\n", "\t" x $depth;
-    }
+	if (defined $self->catch and @{$self->catch}) {
+		print $fh "catch\n";
 
-    if (defined $self->aft and @{$self->aft}) {
-	print $fh "after\n";
+		$depth++;
+		print $fh "\t" x $depth;
 
-	$depth++;
-	print $fh "\t" x $depth;
+		my $first = 1;
+		foreach (@{$self->catch}) {
+			if ($first) { $first = 0 } else { print $fh ";\n", "\t" x $depth }
+			$_->print($fh, $depth);
+		}
 
-	my $first = 1;
-	foreach (@{$self->aft}) {
-	    if ($first) { $first = 0 } else { print $fh ";\n", "\t" x $depth }
-	    $_->print($fh, $depth);
+		$depth--;
+		print $fh "\n", "\t" x $depth;
 	}
 
-	$depth--;
-	print $fh "\n", "\t" x $depth;
-    }
+	if (defined $self->aft and @{$self->aft}) {
+		print $fh "after\n";
 
-    print $fh "end";
+		$depth++;
+		print $fh "\t" x $depth;
+
+		my $first = 1;
+		foreach (@{$self->aft}) {
+			if ($first) { $first = 0 } else { print $fh ";\n", "\t" x $depth }
+			$_->print($fh, $depth);
+		}
+
+		$depth--;
+		print $fh "\n", "\t" x $depth;
+	}
+
+	print $fh "end";
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -132,17 +132,17 @@ Pretty-prints the node to its filehandle argument.
 
 =head1 EXAMPLE
 
-    try
-	{ok, X} = my_fun(),
-	binary_to_term(X)
-    catch
-	throw:Term -> Term
-    after
-	file:close(F)
-    end
+	try
+		{ok, X} = my_fun(),
+		binary_to_term(X)
+	catch
+		throw:Term -> Term
+	after
+		file:close(F)
+	end
 
 =cut
 
 1;
 
-# vim: set sw=4:
+# vim: set sw=4 ts=4:

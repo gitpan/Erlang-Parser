@@ -1,4 +1,4 @@
-# Copyright 2011 Anneli Cuss. ( anneli AT cpan DOT org )
+# Copyright 2011-2012 Arlen Cuss. ( anneli AT cpan DOT org )
 # This is free software; you can redistribute it and/or modify it under the
 # same terms as Perl itself.
 
@@ -11,27 +11,27 @@ has 'alts' => (is => 'rw', required => 1, isa => 'ArrayRef[Erlang::Parser::Node:
 has 'aft'  => (is => 'rw', required => 0, isa => 'Maybe[Erlang::Parser::Node::ReceiveAfter]');
 
 sub print {
-    my ($self, $fh, $depth) = @_;
-    $depth ||= 0;
+	my ($self, $fh, $depth) = @_;
+	$depth ||= 0;
 
-    print $fh "receive\n";
+	print $fh "receive\n";
 
-    $depth++;
+	$depth++;
 
-    print $fh "\t" x $depth;
+	print $fh "\t" x $depth;
 
-    my $first = 1;
-    foreach (@{$self->alts}) {
-	if ($first) { $first = 0 } else { print $fh ";\n", "\t" x $depth }
-	$_->print($fh ,$depth);
-    }
+	my $first = 1;
+	foreach (@{$self->alts}) {
+		if ($first) { $first = 0 } else { print $fh ";\n", "\t" x $depth }
+		$_->print($fh ,$depth);
+	}
 
-    $depth--;
-    print $fh "\n", "\t" x $depth;
-    
-    $self->aft->print($fh, $depth) if defined $self->aft;
-    
-    print $fh "\n", "\t" x $depth, "end";
+	$depth--;
+	print $fh "\n", "\t" x $depth;
+	
+	$self->aft->print($fh, $depth) if defined $self->aft;
+	
+	print $fh "\n", "\t" x $depth, "end";
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -72,20 +72,20 @@ Pretty-prints the node to its filehandle argument.
 
 =head1 EXAMPLE
 
-    receive
-	{X, Y} when is_bool(X) ->
-	    X;
-	{X, Y, Z} ->
-	    Y + Z;
-	_ ->
-	    io:format("wth~n", [])
-    after
-	10000 ->
-	    {error, timeout}
-    end
+	receive
+		{X, Y} when is_bool(X) ->
+			X;
+		{X, Y, Z} ->
+			Y + Z;
+		_ ->
+			io:format("wth~n", [])
+	after
+		10000 ->
+			{error, timeout}
+	end
 
 =cut
 
 1;
 
-# vim: set sw=4:
+# vim: set sw=4 ts=4:

@@ -1,4 +1,4 @@
-# Copyright 2011 Anneli Cuss. ( anneli AT cpan DOT org )
+# Copyright 2011-2012 Arlen Cuss. ( anneli AT cpan DOT org )
 # This is free software; you can redistribute it and/or modify it under the
 # same terms as Perl itself.
 
@@ -29,4 +29,4 @@ It provides no (!) function of its own, other than ensuring all AST nodes know h
 
 1;
 
-# vim: set sw=4:
+# vim: set sw=4 ts=4:

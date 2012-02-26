@@ -1,4 +1,4 @@
-# Copyright 2011 Anneli Cuss. ( anneli AT cpan DOT org )
+# Copyright 2011-2012 Arlen Cuss. ( anneli AT cpan DOT org )
 # This is free software; you can redistribute it and/or modify it under the
 # same terms as Perl itself.
 
@@ -11,14 +11,14 @@ has 'op' => (is => 'rw', required => 1, isa => 'Str');
 has 'a'  => (is => 'rw', required => 1, does => 'Erlang::Parser::Node');
 
 sub print {
-    my ($self, $fh, $depth) = @_;
-    $depth ||= 0;
+	my ($self, $fh, $depth) = @_;
+	$depth ||= 0;
 
-    print $fh '(';
-    print $fh $self->op;
-    print $fh ' ';
-    $self->a->print($fh, $depth);
-    print $fh ')';
+	print $fh '(';
+	print $fh $self->op;
+	print $fh ' ';
+	$self->a->print($fh, $depth);
+	print $fh ')';
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -57,10 +57,10 @@ Pretty-prints the node to its filehandle argument.
 
 =head1 EXAMPLE
 
-    !true
+	!true
 
 =cut
 
 1;
 
-# vim: set sw=4:
+# vim: set sw=4 ts=4:
