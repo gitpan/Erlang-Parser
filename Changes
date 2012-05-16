@@ -18,3 +18,7 @@ Revision history for Erlang::Parser
         Fixed parsing precedence issues.
         Hard tabs across all code.
         Add some missing keywords.
+
+0.5.1   2012-05-17
+        Update GitHub links.
+        

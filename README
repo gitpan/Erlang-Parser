@@ -2,8 +2,8 @@ NAME
     Erlang::Parser - Erlang source code parser
 
 VERSION
-    This document describes version 0.5 of Erlang::Parser released
-    2012-02-27.
+    This document describes version 0.5.1 of Erlang::Parser released
+    2012-05-17.
 
 SYNOPSIS
         use Erlang::Parser;
@@ -55,11 +55,11 @@ SUPPORT
 
     *   GitHub: source code repository
 
-        <http://github.com/anneli/Erlang--Parser>
+        <http://github.com/unnali/Erlang--Parser>
 
     *   GitHub: open an issue
 
-        <http://github.com/anneli/Erlang--Parser/issues>
+        <http://github.com/unnali/Erlang--Parser/issues>
 
     *   Mailing list
 

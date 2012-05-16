@@ -38,11 +38,11 @@ Erlang::Parser - Erlang source code parser
 
 =head1 VERSION
 
-This document describes version 0.5 of Erlang::Parser released 2012-02-27.
+This document describes version 0.5.1 of Erlang::Parser released 2012-05-17.
 
 =cut
 
-our $VERSION = '0.5';
+our $VERSION = '0.5.1';
 
 =head1 SYNOPSIS
 
@@ -107,11 +107,11 @@ Other places of interest:
 
 =item * GitHub: source code repository
 
-L<http://github.com/anneli/Erlang--Parser>
+L<http://github.com/unnali/Erlang--Parser>
 
 =item * GitHub: open an issue
 
-L<http://github.com/anneli/Erlang--Parser/issues>
+L<http://github.com/unnali/Erlang--Parser/issues>
 
 =item * Mailing list
 
