@@ -1,4 +1,4 @@
-# Copyright 2011-2012 Arlen Cuss. ( anneli AT cpan DOT org )
+# Copyright 2011-2012 Yuki Izumi. ( anneli AT cpan DOT org )
 # This is free software; you can redistribute it and/or modify it under the
 # same terms as Perl itself.
 

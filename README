@@ -2,8 +2,8 @@ NAME
     Erlang::Parser - Erlang source code parser
 
 VERSION
-    This document describes version 0.5.1 of Erlang::Parser released
-    2012-05-17.
+    This document describes version 0.5.2 of Erlang::Parser released
+    2014-01-27.
 
 SYNOPSIS
         use Erlang::Parser;
@@ -44,7 +44,7 @@ DESCRIPTION
         the first argument.
 
 AUTHOR
-    Arlen Cuss (anneli@cpan.org)
+    Yuki Izumi (anneli@cpan.org)
 
 SUPPORT
     You can find documentation for Erlang::Parser with the perldoc command.
@@ -55,23 +55,18 @@ SUPPORT
 
     *   GitHub: source code repository
 
-        <http://github.com/unnali/Erlang--Parser>
+        <http://github.com/kivikakk/Erlang--Parser>
 
     *   GitHub: open an issue
 
-        <http://github.com/unnali/Erlang--Parser/issues>
-
-    *   Mailing list
-
-        <http://groups.google.com/group/erlang--parser-devel>,
-        <erlang--parser-devel@googlegroups.com>
+        <http://github.com/kivikakk/Erlang--Parser/issues>
 
     *   Twitter: the author
 
-        <http://twitter.com/unnali>
+        <http://twitter.com/kivikakk>
 
 LICENSE AND COPYRIGHT
-    Copyright (c) 2011-2012, Arlen Cuss "<ANNELI@CPAN.org>". All rights
+    Copyright (c) 2011-2012, Yuki Izumi "<ANNELI@CPAN.org>". All rights
     reserved.
 
     This module is free software; you can redistribute it and/or modify it

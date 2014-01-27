@@ -1,4 +1,4 @@
-# Copyright 2011-2012 Arlen Cuss. ( anneli AT cpan DOT org )
+# Copyright 2011-2012 Yuki Izumi. ( anneli AT cpan DOT org )
 # This is free software; you can redistribute it and/or modify it under the
 # same terms as Perl itself.
 
@@ -38,11 +38,11 @@ Erlang::Parser - Erlang source code parser
 
 =head1 VERSION
 
-This document describes version 0.5.1 of Erlang::Parser released 2012-05-17.
+This document describes version 0.5.2 of Erlang::Parser released 2014-01-27.
 
 =cut
 
-our $VERSION = '0.5.1';
+our $VERSION = '0.5.2';
 
 =head1 SYNOPSIS
 
@@ -93,7 +93,7 @@ argument.
 
 =head1 AUTHOR
 
-Arlen Cuss (anneli@cpan.org)
+Yuki Izumi (anneli@cpan.org)
 
 =head1 SUPPORT
 
@@ -125,7 +125,7 @@ L<http://twitter.com/unnali>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (c) 2011-2012, Arlen Cuss C<< <ANNELI@CPAN.org> >>. All rights
+Copyright (c) 2011-2012, Yuki Izumi C<< <ANNELI@CPAN.org> >>. All rights
 reserved.
 
 This module is free software; you can redistribute it and/or

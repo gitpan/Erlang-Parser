@@ -1,4 +1,4 @@
-# Copyright 2011-2012 Arlen Cuss. ( anneli AT cpan DOT org )
+# Copyright 2011-2012 Yuki Izumi. ( anneli AT cpan DOT org )
 # This is free software; you can redistribute it and/or modify it under the
 # same terms as Perl itself.
 
@@ -12,7 +12,7 @@ my $YAPP_COMMAND = "(yapp -v -m 'Erlang::Parser::Parser' -o lib/Erlang/Parser/Pa
 
 WriteMakefile(
 	NAME          => 'Erlang::Parser',
-	AUTHOR        => q{Arlen Cuss <anneli@cpan.org>},
+	AUTHOR        => q{Yuki Izumi <anneli@cpan.org>},
 	ABSTRACT_FROM => 'lib/Erlang/Parser.pm',
 	VERSION_FROM  => 'lib/Erlang/Parser.pm',
 	PL_FILES      => {},
